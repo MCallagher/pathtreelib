@@ -80,8 +80,8 @@ class TreeException(Exception):
 
 
 class PathNode():
-    """ The PathNode class describe a tree node containing information associated
-    to a path.
+    """ The PathNode class describe a tree node containing information
+    associated to a path.
 
     The children of a node are sorted by: type (directories first, then files),
     path (alphabetically on the file/dir name).
@@ -105,11 +105,11 @@ class PathNode():
 
         self.path = path
         self.parent = parent
-        self.children = self._compute_children()
+        self.children = self.__compute_children()
         self.property = {}
 
-    def _compute_children(self):
-        """ (private) Iteratively scan and generate the subtree of the node.
+    def __compute_children(self):
+        """ Iteratively scan and generate the subtree of the node.
         """
 
         children = []
@@ -189,7 +189,10 @@ class PathNode():
         Code sample for computing the height:
         ```
         base_func = lambda node: 0
-        recursive_func = lambda node, children: 1 + min([int(child.property["height"]) for child in children])
+        recursive_func = lambda node, children: 1 + min([
+            int(child.property["height"])
+            for child in children
+        ])
         root.compute_bottom_up_property("height", base_func, recursive_func)
         ```
         """
@@ -318,24 +321,6 @@ class PathNode():
 
         return f"Node: '{self.path}' | Properties: {self.property}"
 
-    def describe(self) -> str:
-        """ Return a multiline string describing the node.
-
-        Print the node name, with parent and children, then the properties.
-
-        Return:
-            A multiline string describing the node.
-        """
-
-        pieces = [
-            f"{'Node:':<10s} {self.path.name}",
-            f"{'Parent:':<10s} {self.parent.path.name if self.parent is not None else 'none'}",
-            f"{'Children:':<10s} {[child.path.name for child in self.children]}"
-        ]
-        for property_key, property_value in self.property.items():
-            pieces.append(f"{property_key + ':'} {property_value}")
-        return "\n".join(pieces)
-
 
 class PathTree():
     """ The PathTree class describe a tree made up by PathNode nodes.
@@ -402,6 +387,31 @@ class PathTree():
         while len(nodes) > 0:
             node = nodes.pop(0)
             nodes = node.children + nodes
+            yield node
+
+    def validated_iter(self, valid_func:Callable[[PathNode], bool]) -> Iterator:
+        """ Return an iterator on filtered nodes of the tree.
+
+        The nodes that do not satisfy the condition are excluded and so their
+        subtree.
+
+        Params:
+            valid_func: the criteria to keep nodes.
+
+        Return:
+            An iterator that exclude not valid nodes and subtrees.
+
+        Params of valid_func:
+            node: the node to test
+        
+        Return of valid_func:
+            True if the node is acceptable, false otherwise.
+        """
+
+        nodes = [self.root] if valid_func(self.root) else []
+        while len(nodes) > 0:
+            node = nodes.pop(0)
+            nodes = [child for child in node.children if valid_func(child)] + nodes
             yield node
 
     def compute_bottom_up_property(
@@ -738,7 +748,34 @@ class PathTree():
                 not keep_condition(node)
         )
 
-    def get_top_k_largest_nodes(self, k:int, keep_ancestors:bool=False) -> list[PathNode]:
+    def get_node(self, path:Path) -> Union[PathNode, None]:
+        """ Return the PathNode corresponding to the passed Path.
+
+        Params:
+            path: the path to search in the tree
+        
+        Return:
+            The PathNode corresponding to the passed Path if exists, None
+            otherwise.
+        """
+
+        parts = path.parts
+        node = self.root
+        idx = 0
+        found = True
+        while found:
+            if path == node.path:
+                return node
+            found = False
+            for child in node.children:
+                if parts[idx] == child.path.parts[idx]:
+                    node = child
+                    found = True
+                    break
+            idx += 1
+        return None
+
+    def get_k_largest_nodes(self, k:int, keep_ancestors:bool=False) -> list[PathNode]:
         """ Return the k nodes with larger size.
 
         By default, the list contains the nodes that have the largest size but
@@ -843,7 +880,7 @@ class PathTree():
             properties = list(self.root.property.keys())
 
         # Header
-        header = ";".join(properties)
+        header = ";".join(["path"] + properties)
 
         # Data
         lines = []
