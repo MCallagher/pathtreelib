@@ -312,14 +312,19 @@ class PathNode():
     def __str__(self) -> str:
         """ Return a string describing the node properties.
 
-        Print the node name then the properties. For a more complete description
-        use `describe()`.
+        Print the node name then the properties.
 
         Return:
             A string describing the node.
         """
 
-        return f"Node: '{self.path}' | Properties: {self.property}"
+        properties = []
+        for prop, value in self.property.items():
+            if isinstance(prop, PathTreeProperty):
+                properties.append(f"{prop.name}={value}")
+            else:
+                properties.append(f"{prop}={value}")
+        return f"[Pathnode] > Path: '{self.path}' | Properties: {', '.join(properties)}"
 
 
 class PathTree():
@@ -417,8 +422,8 @@ class PathTree():
     def compute_bottom_up_property(
             self,
             property_name:Union[str,PathTreeProperty],
-            base_func:Callable[["PathNode"], Any],
-            recursive_func:Callable[["PathNode", list["PathNode"]], Any]
+            leaf_func:Callable[["PathNode"], Any],
+            inode_func:Callable[["PathNode", list["PathNode"]], Any]
             ) -> None:
         """ Compute a property of bottom-up type in the tree.
 
@@ -428,25 +433,25 @@ class PathTree():
         Params:
             property_name: the name of the property (used as key in property
             dict)
-            base_func: the function to compute the property on the leaves
-            recursive_func: the function to compute the property on the inner
+            leaf_func: the function to compute the property on the leaves
+            inode_func: the function to compute the property on the inner
             nodes (assuming it is already computed on the leaves)
 
-        Params of base_func:
+        Params of leaf_func:
             leaf: the current node (as PathNode)
 
-        Params of recursive_func:
+        Params of inode_func:
             inode: the current node (as PathNode)
             children: the list of children (as PathNode) of the current node
         """
 
-        self.root.compute_bottom_up_property(property_name, base_func, recursive_func)
+        self.root.compute_bottom_up_property(property_name, leaf_func, inode_func)
 
     def compute_top_down_property(
             self,
             property_name:Union[str,PathTreeProperty],
             root_func:Callable[["PathNode"], Any],
-            parent_func:Callable[["PathNode", "PathNode"], Any]
+            notroot_func:Callable[["PathNode", "PathNode"], Any]
             ) -> None:
         """ Compute a property of top-down type in the subtree of the node.
 
@@ -457,18 +462,18 @@ class PathTree():
             property_name: the name of the property (used as key in property
             dict)
             root_func: the function to compute the property on the root
-            parent_func: the function to compute the property on the not-root
+            notroot_func: the function to compute the property on the not-root
             nodes (assuming it is already computed on the parent)
 
         Params of root_func:
             root: the current node (as PathNode)
 
-        Params of parent_func:
+        Params of notroot_func:
             node: the current node (as PathNode)
             parent: the parent (as PathNode) of the current node
         """
 
-        self.root.compute_top_down_property(property_name, root_func, parent_func)
+        self.root.compute_top_down_property(property_name, root_func, notroot_func)
 
     def compute_individual_property(
             self,
@@ -852,12 +857,13 @@ class PathTree():
             A string describing the tree.
         """
 
-        return f"Tree root | {str(self.root)}"
+        return f"[PathTree] > Root: ({str(self.root)})"
 
     def to_csv(
             self,
             csvfile:Union[Path, str],
             properties:Union[list[str], None]=None,
+            node_condition:Callable[[PathNode], bool]=lambda node: True,
             node_limit:int=1000000
         ) -> None:
         """ Export all nodes of the tree to a csv.
@@ -870,6 +876,8 @@ class PathTree():
             csvfile: the name of the csv for the export.
             properties: the list of properties to include in the export. If None
             all parameters are included.
+            node_condition: the condition a node must meet to be exported (by
+            default all nodes are exported).
             node_limit: the max number of nodes that can be exported. If <= 0,
             no limitation is applied.
         """
@@ -885,8 +893,10 @@ class PathTree():
         # Data
         lines = []
         for row, node in enumerate(self.breadth_first_iter(), 1):
-            if 0 < node_limit < row:
+            if 0 < node_limit < len(lines):
                 break
+            if not node_condition(node):
+                continue
             line = [str(node.path)]
             for curr_property in properties:
                 line.append(node.property[curr_property])
@@ -901,6 +911,7 @@ class PathTree():
             self,
             excelfile:Union[Path, str],
             properties:Union[list[str], None]=None,
+            node_condition:Callable[[PathNode], bool]=lambda node: True,
             node_limit:int=1000000
         ) -> None:
         """ Export all nodes of the tree to Excel.
@@ -913,6 +924,8 @@ class PathTree():
             excelfile: the name of the Excel for the export.
             properties: the list of properties to include in the export. If None
             all parameters are included.
+            node_condition: the condition a node must meet to be exported (by
+            default all nodes are exported).
             node_limit: the max number of nodes that can be exported. If <= 0,
             no limitation is applied.
         """
@@ -937,13 +950,18 @@ class PathTree():
             sheet.write(0, col, curr_property, header_format)
 
         # Data
+        count = 0
         for row, node in enumerate(self.breadth_first_iter(), 1):
-            if 0 < node_limit < row:
+            if 0 < node_limit < count:
                 break
+            if not node_condition(node):
+                continue
+
             sheet.write(row, 0, str(node.path))
             for col, curr_property in enumerate(properties, 1):
                 if curr_property in node.property:
                     sheet.write(row, col, node.property[property])
+            count += 1
 
         sheet.autofit()
         workbook.close()
