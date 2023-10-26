@@ -892,7 +892,7 @@ class PathTree():
 
         # Data
         lines = []
-        for row, node in enumerate(self.breadth_first_iter(), 1):
+        for node in self.breadth_first_iter():
             if 0 < node_limit < len(lines):
                 break
             if not node_condition(node):
