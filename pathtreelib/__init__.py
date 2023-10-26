@@ -678,7 +678,6 @@ class PathTree():
                 1. True if the property appeared in all nodes, false otherwise
                 2. True if the property appeared in at least one node, false
                 otherwise
-            is missing.
         """
 
         in_all_nodes = True
