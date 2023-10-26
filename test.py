@@ -4,112 +4,93 @@
 
 from   pathlib import Path
 import unittest as ut
+import json
 import gc
 
 from   pathtreelib import PathTree, PathTreeProperty
 
-class TestTree(ut.TestCase):
-    """ Test the tree structure, properties and methods.
+class TestTreeRefactor(ut.TestCase):
 
-    The structure tested is the following:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        test_file = "test_lib.json"
+        text = None
+        with open(test_file, "r", encoding="utf8") as f:
+            text = f.read()
+        self.assertIsNotNone(text, f"Failed to load test file {test_file}")
 
-    - test
-        - sub1
-            - file1.txt (10 B)
-            - file2.txt (20 B)
-        - sub2
-            - file3.txt (30 B)
-            - subsub1
-                - file4.txt (40 B)
-                - file4.txt (50 B)
-    """
-
-    _directories = [
-        Path("test"),
-        Path("test/sub1"),
-        Path("test/sub2"),
-        Path("test/sub2/subsub1"),
-    ]
-
-    _files = [
-        Path("test/sub1/file1.txt"),
-        Path("test/sub1/file2.txt"),
-        Path("test/sub2/file3.txt"),
-        Path("test/sub2/subsub1/file4.txt"),
-        Path("test/sub2/subsub1/file5.txt")
-    ]
+        self.test_setup = json.loads(text)["test1"]["setup"]
+        self.test_solution = json.loads(text)["test1"]["solution"]
 
     def setUp(self) -> None:
         """ Create directories and files for the test.
-
-        Create the tree of directories and files specified in the class
-        docstring.
         """
 
-        for directory in TestTree._directories:
-            directory.mkdir(exist_ok=True)
-        for idx, file in enumerate(TestTree._files, 1):
-            with open(file, "w", encoding="utf8") as file:
-                file.write("1234567890" * idx)
+        for directory in self.test_setup["dir"]:
+            Path(directory).mkdir(exist_ok=True)
+        for fileinfo in self.test_setup["files"]:
+            with open(Path(fileinfo["name"]), "w", encoding="utf8") as file:
+                file.write("X" * fileinfo["size"])
 
-    def test_tree(self):
-        """ Check the tree structure and properties.
+    def test_parent_children_structure(self):
+        sol_parent = self.test_solution["parent"]
+        sol_children = self.test_solution["children"]
 
-        Check the number of children of the nodes and test each of the basic
-        properties.
-        """
+        root_path = self.test_setup["dir"][0]
+        tree = PathTree(root_path)
+        for node in tree:
+            if node.parent is None:
+                self.assertEqual("", sol_parent[node.path.as_posix()])
+            else:
+                self.assertEqual(node.parent.path.as_posix(), sol_parent[node.path.as_posix()])
+            self.assertEqual(
+                [child.path.as_posix() for child in node.children],
+                sol_children[node.path.as_posix()]
+            )
 
-        tree = PathTree("test")
-        root = tree.root
-        self.assertEqual(len(root.children), 2, f"Node path: {root.path.name}")
-        s_1, s_2 = root.children
-        self.assertEqual(len(s_2.children), 2, f"Node path: {s_2.path.name}")
-        ss_1, f_3 = s_2.children
-        self.assertEqual(len(s_1.children), 2, f"Node path: {s_1.path.name}")
-        f_1, f_2 = s_1.children
-        self.assertEqual(len(ss_1.children), 2, f"Node path: {ss_1.path.name}")
-        f_4, f_5 = ss_1.children
-
-        ref_properties = [
-            (PathTreeProperty.HEIGHT,            [2,1,1,1,0,0,0,0,0]),
-            (PathTreeProperty.DEPHT,             [0,1,1,2,2,2,2,3,3]),
-            (PathTreeProperty.NUM_OF_DIRECTORIES,[4,1,2,1,0,0,0,0,0]),
-            (PathTreeProperty.NUM_OF_FILES,      [5,2,3,2,1,1,1,1,1]),
-            (PathTreeProperty.NUM_OF_INODES,     [4,1,2,1,0,0,0,0,0]),
-            (PathTreeProperty.NUM_OF_LEAVES,     [5,2,3,2,1,1,1,1,1]),
-            (PathTreeProperty.NUM_OF_NODES,      [9,3,5,3,1,1,1,1,1]),
-            (PathTreeProperty.SIZE,              [150,30,120,90,10,20,30,40,50]),
-            (PathTreeProperty.SIMPLE_SIZE,       [
-                "150 B","30 B","120 B","90 B","10 B","20 B","30 B","40 B","50 B"
-            ])
+    def test_property_computation(self):
+        property_keys = [
+            PathTreeProperty.HEIGHT,             PathTreeProperty.DEPHT,
+            PathTreeProperty.NUM_OF_DIRECTORIES, PathTreeProperty.NUM_OF_FILES,
+            PathTreeProperty.NUM_OF_INODES,      PathTreeProperty.NUM_OF_LEAVES,
+            PathTreeProperty.NUM_OF_NODES,       PathTreeProperty.SIZE,
+            PathTreeProperty.SIMPLE_SIZE
         ]
 
-        for idx, node in enumerate([root, s_1, s_2, ss_1, f_1, f_2, f_3, f_4, f_5]):
-            for prop_name, prop_values in ref_properties:
+        root_path = self.test_setup["dir"][0]
+        tree = PathTree(root_path)
+        for idx, node in enumerate(tree):
+            for property_key in property_keys:
                 self.assertEqual(
-                    node.property[prop_name],
-                    prop_values[idx],
-                    f"Node path: {node.path.name}, property: {prop_name}"
+                    node.property[property_key],
+                    self.test_solution[property_key.value][idx]
                 )
 
-    def test_pruning(self):
+    def test_logical_physical_pruning(self):
         """ Test the logical and phisical pruning.
         """
 
-        tree = PathTree("test")
+        root_path = self.test_setup["dir"][0]
+        tree = PathTree(root_path)
+        sol_active_nodes = self.test_solution["unpruned"]
 
-        tree.logical_pruning(lambda node: node.property[PathTreeProperty.SIZE] > 30)
-        logical_active_nodes = 0
-        for node in tree:
-            if not node.property[PathTreeProperty.PRUNED]:
-                logical_active_nodes += 1
-        self.assertEqual(logical_active_nodes, 5)
+        def prune_small_nodes(node):
+            return node.property[PathTreeProperty.SIZE] > self.test_setup["pruning_size"]
 
-        tree.physical_pruning(lambda node: node.property[PathTreeProperty.SIZE] > 30)
-        phisical_active_nodes = 0
-        for node in tree:
-            phisical_active_nodes += 1
-        self.assertEqual(phisical_active_nodes, 5)
+        tree.logical_pruning(prune_small_nodes)
+        logical_active_nodes = list(
+            node.path.as_posix()
+            for node in tree
+            if not node.property[PathTreeProperty.PRUNED]
+        )
+        self.assertEqual(logical_active_nodes, sol_active_nodes)
+
+        tree.physical_pruning(prune_small_nodes)
+        phisical_active_nodes = list(
+            node.path.as_posix()
+            for node in tree
+        )
+        self.assertEqual(phisical_active_nodes, sol_active_nodes)
 
     def test_copy(self):
         """ Test the tree copy.
@@ -117,34 +98,36 @@ class TestTree(ut.TestCase):
         Create a copy of the tree, delete the original and check the structure.
         """
 
+        sol_parent = self.test_solution["parent"]
+        sol_children = self.test_solution["children"]
+
         tree = PathTree("test")
         new_tree = tree.copy()
         for node in tree:
             del node
         del tree
         gc.collect()
-        root = new_tree.root
-        self.assertEqual(len(root.children), 2, f"Node path: {root.path.name}")
-        s_1, s_2 = root.children
-        self.assertEqual(len(s_2.children), 2, f"Node path: {s_2.path.name}")
-        ss_1 = s_2.children[0]
-        self.assertEqual(len(s_1.children), 2, f"Node path: {s_1.path.name}")
-        self.assertEqual(len(ss_1.children), 2, f"Node path: {ss_1.path.name}")
-
+        for node in new_tree:
+            if node.parent is None:
+                self.assertEqual("", sol_parent[node.path.as_posix()])
+            else:
+                self.assertEqual(node.parent.path.as_posix(), sol_parent[node.path.as_posix()])
+            self.assertEqual(
+                [child.path.as_posix() for child in node.children],
+                sol_children[node.path.as_posix()]
+            )
 
     def tearDown(self) -> None:
         """ Remove directories and files for the test.
-
-        Delete the tree of directories and files specified in the class
-        docstring.
         """
 
-        for file in TestTree._files:
-            file.unlink()
-        TestTree._directories.reverse()
-        for directory in TestTree._directories:
-            directory.rmdir()
-        TestTree._directories.reverse()
+        for fileinfo in self.test_setup["files"]:
+            Path(fileinfo["name"]).unlink()
+        rev_dirs = [directory for directory in self.test_setup["dir"]]
+        rev_dirs.reverse()
+        for directory in rev_dirs:
+            Path(directory).rmdir()
+
 
 if __name__ == "__main__":
     ut.main()
