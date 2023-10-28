@@ -3,6 +3,7 @@
     "test1": {
         "setup": {
             "structure":"- test\n    - sub1\n        - file1.txt (10 B)\n        - file2.txt (20 B)\n    - sub2\n        - file3.txt (30 B)\n        - subsub1\n            - file4.txt (40 B)\n            - file4.txt (50 B)",
+            "root": "test",
             "dir": [
                 "test",
                 "test/sub1",
@@ -83,8 +84,36 @@
                 "test/sub2/subsub1",
                 "test/sub2/subsub1/file4.txt",
                 "test/sub2/subsub1/file5.txt"
+            ],
+            "bfs_order": [
+                "test",
+                "test/sub1",
+                "test/sub2",
+                "test/sub1/file1.txt",
+                "test/sub1/file2.txt",
+                "test/sub2/subsub1",
+                "test/sub2/file3.txt",
+                "test/sub2/subsub1/file4.txt",
+                "test/sub2/subsub1/file5.txt"
+            ],
+            "dfs_order": [
+                "test",
+                "test/sub1",
+                "test/sub1/file1.txt",
+                "test/sub1/file2.txt",
+                "test/sub2",
+                "test/sub2/subsub1",
+                "test/sub2/subsub1/file4.txt",
+                "test/sub2/subsub1/file5.txt",
+                "test/sub2/file3.txt"
+            ],
+            "valid_order": [
+                "test",
+                "test/sub2",
+                "test/sub2/subsub1",
+                "test/sub2/subsub1/file4.txt",
+                "test/sub2/subsub1/file5.txt"
             ]
         }
     }
 }
-

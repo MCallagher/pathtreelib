@@ -10,8 +10,19 @@ import gc
 from   pathtreelib import PathTree, PathTreeProperty
 
 class TestTreeRefactor(ut.TestCase):
+    """ Set of test for the PathTree class.
+
+    The tests check:
+    - tree structure (parent, children)
+    - property computation
+    - logical and physical pruning
+    - tree copy
+    """
 
     def __init__(self, *args, **kwargs):
+        """ Initialize the test set importing the test source.
+        """
+
         super().__init__(*args, **kwargs)
         test_file = "test_lib.json"
         text = None
@@ -33,11 +44,13 @@ class TestTreeRefactor(ut.TestCase):
                 file.write("X" * fileinfo["size"])
 
     def test_parent_children_structure(self):
+        """ Test parent children structure. 
+        """
+
         sol_parent = self.test_solution["parent"]
         sol_children = self.test_solution["children"]
 
-        root_path = self.test_setup["dir"][0]
-        tree = PathTree(root_path)
+        tree = PathTree(self.test_setup["root"])
         for node in tree:
             if node.parent is None:
                 self.assertEqual("", sol_parent[node.path.as_posix()])
@@ -49,6 +62,9 @@ class TestTreeRefactor(ut.TestCase):
             )
 
     def test_property_computation(self):
+        """ Test property computation.
+        """
+
         property_keys = [
             PathTreeProperty.HEIGHT,             PathTreeProperty.DEPHT,
             PathTreeProperty.NUM_OF_DIRECTORIES, PathTreeProperty.NUM_OF_FILES,
@@ -57,8 +73,7 @@ class TestTreeRefactor(ut.TestCase):
             PathTreeProperty.SIMPLE_SIZE
         ]
 
-        root_path = self.test_setup["dir"][0]
-        tree = PathTree(root_path)
+        tree = PathTree(self.test_setup["root"])
         for idx, node in enumerate(tree):
             for property_key in property_keys:
                 self.assertEqual(
@@ -67,11 +82,10 @@ class TestTreeRefactor(ut.TestCase):
                 )
 
     def test_logical_physical_pruning(self):
-        """ Test the logical and phisical pruning.
+        """ Test logical and phisical pruning.
         """
 
-        root_path = self.test_setup["dir"][0]
-        tree = PathTree(root_path)
+        tree = PathTree(self.test_setup["root"])
         sol_active_nodes = self.test_solution["unpruned"]
 
         def prune_small_nodes(node):
@@ -94,14 +108,12 @@ class TestTreeRefactor(ut.TestCase):
 
     def test_copy(self):
         """ Test the tree copy.
-
-        Create a copy of the tree, delete the original and check the structure.
         """
 
         sol_parent = self.test_solution["parent"]
         sol_children = self.test_solution["children"]
 
-        tree = PathTree("test")
+        tree = PathTree(self.test_setup["root"])
         new_tree = tree.copy()
         for node in tree:
             del node
@@ -116,6 +128,27 @@ class TestTreeRefactor(ut.TestCase):
                 [child.path.as_posix() for child in node.children],
                 sol_children[node.path.as_posix()]
             )
+
+    def test_iterators(self):
+        """ Test the iterators.
+        """
+
+        sol_bfs_order = self.test_solution["bfs_order"]
+        sol_dfs_order = self.test_solution["dfs_order"]
+        sol_valid_order = self.test_solution["valid_order"]
+
+        def filter_small_nodes(node):
+            return node.property[PathTreeProperty.SIZE] > self.test_setup["pruning_size"]
+
+
+        tree = PathTree(self.test_setup["root"])
+
+        bfs_order = list(node.path.as_posix() for node in tree.breadth_first_iter())
+        self.assertEqual(bfs_order, sol_bfs_order)
+        dfs_order = list(node.path.as_posix() for node in tree.depth_first_iter())
+        self.assertEqual(dfs_order, sol_dfs_order)
+        valid_order = list(node.path.as_posix() for node in tree.validated_iter(filter_small_nodes))
+        self.assertEqual(valid_order, sol_valid_order)
 
     def tearDown(self) -> None:
         """ Remove directories and files for the test.
