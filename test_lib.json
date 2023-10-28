@@ -113,7 +113,8 @@
                 "test/sub2/subsub1",
                 "test/sub2/subsub1/file4.txt",
                 "test/sub2/subsub1/file5.txt"
-            ]
+            ],
+            "csv": "path;<depth>;<height>\ntest;0;2\ntest/sub2;1;1\ntest/sub2/subsub1;2;1\n"
         }
     }
 }

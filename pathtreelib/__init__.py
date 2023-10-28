@@ -752,7 +752,7 @@ class PathTree():
                 not keep_condition(node)
         )
 
-    def get_node(self, path:Path) -> Union[PathNode, None]:
+    def get_node(self, path:Union[str,Path]) -> Union[PathNode, None]:
         """ Return the PathNode corresponding to the passed Path.
 
         Params:
@@ -763,9 +763,11 @@ class PathTree():
             otherwise.
         """
 
+        if isinstance(path, str):
+            path = Path(path)
         parts = path.parts
         node = self.root
-        idx = 0
+        idx = 1
         found = True
         while found:
             if path == node.path:
@@ -861,7 +863,7 @@ class PathTree():
     def to_csv(
             self,
             csvfile:Union[Path, str],
-            properties:Union[list[str], None]=None,
+            properties:Union[list[Union[str, PathTreeProperty]], None]=None,
             node_condition:Callable[[PathNode], bool]=lambda node: True,
             node_limit:int=1000000
         ) -> None:
@@ -887,18 +889,22 @@ class PathTree():
             properties = list(self.root.property.keys())
 
         # Header
-        header = ";".join(["path"] + properties)
+        str_properties = []
+        for prop in properties:
+            if isinstance(prop, PathTreeProperty):
+                str_properties.append(prop.value)
+        header = ";".join(["path"] + str_properties)
 
         # Data
         lines = []
         for node in self.breadth_first_iter():
-            if 0 < node_limit < len(lines):
+            if 0 < node_limit <= len(lines):
                 break
             if not node_condition(node):
                 continue
-            line = [str(node.path)]
+            line = [node.path.as_posix()]
             for curr_property in properties:
-                line.append(node.property[curr_property])
+                line.append(str(node.property[curr_property]))
             lines.append(";".join(line))
 
         with open(csvfile, "w", encoding="utf8") as f:
@@ -909,7 +915,7 @@ class PathTree():
     def to_excel(
             self,
             excelfile:Union[Path, str],
-            properties:Union[list[str], None]=None,
+            properties:Union[list[Union[str, PathTreeProperty]], None]=None,
             node_condition:Callable[[PathNode], bool]=lambda node: True,
             node_limit:int=1000000
         ) -> None:
@@ -945,22 +951,25 @@ class PathTree():
             'bg_color': "#002060"
         })
         sheet.write(0, 0, "Path", header_format)
-        for col, curr_property in enumerate(properties, 1):
-            sheet.write(0, col, curr_property, header_format)
+        for col, prop in enumerate(properties, 1):
+            if isinstance(prop, PathTreeProperty):
+                sheet.write(0, col, prop.value, header_format)
+            else:
+                sheet.write(0, col, prop, header_format)
 
         # Data
-        count = 0
-        for row, node in enumerate(self.breadth_first_iter(), 1):
-            if 0 < node_limit < count:
+        row = 1
+        for node in self.breadth_first_iter():
+            if 0 < node_limit < row:
                 break
             if not node_condition(node):
                 continue
 
             sheet.write(row, 0, str(node.path))
-            for col, curr_property in enumerate(properties, 1):
-                if curr_property in node.property:
-                    sheet.write(row, col, node.property[property])
-            count += 1
+            for col, prop in enumerate(properties, 1):
+                if prop in node.property:
+                    sheet.write(row, col, node.property[prop])
+            row += 1
 
         sheet.autofit()
         workbook.close()

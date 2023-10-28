@@ -17,6 +17,9 @@ class TestTreeRefactor(ut.TestCase):
     - property computation
     - logical and physical pruning
     - tree copy
+    - iterators
+    - get node
+    - export
     """
 
     def __init__(self, *args, **kwargs):
@@ -140,7 +143,6 @@ class TestTreeRefactor(ut.TestCase):
         def filter_small_nodes(node):
             return node.property[PathTreeProperty.SIZE] > self.test_setup["pruning_size"]
 
-
         tree = PathTree(self.test_setup["root"])
 
         bfs_order = list(node.path.as_posix() for node in tree.breadth_first_iter())
@@ -150,16 +152,57 @@ class TestTreeRefactor(ut.TestCase):
         valid_order = list(node.path.as_posix() for node in tree.validated_iter(filter_small_nodes))
         self.assertEqual(valid_order, sol_valid_order)
 
+    def test_get_node(self):
+        """ Test the get_node function.
+        """
+
+        tree = PathTree(self.test_setup["root"])
+        for node in tree:
+            self.assertEqual(tree.get_node(node.path.as_posix()), node)
+
+    def test_csv_export(self):
+        """ Test csv export
+        """
+
+        def filter_small_nodes(node):
+            return node.property[PathTreeProperty.SIZE] > self.test_setup["pruning_size"]
+
+        csv_filename = Path("test.csv")
+        excel_filename = Path("test.xlsx")
+
+        tree = PathTree(self.test_setup["root"])
+
+        tree.to_csv(
+            csv_filename,
+            properties=[PathTreeProperty.DEPHT, PathTreeProperty.HEIGHT],
+            node_condition=filter_small_nodes,
+            node_limit=3
+        )
+        with open(csv_filename, "r", encoding="utf8") as f:
+            s = f.read()
+            self.assertEqual(s, self.test_solution["csv"])
+        csv_filename.unlink()
+
+        tree.to_excel(
+            excel_filename,
+            properties=[PathTreeProperty.DEPHT, PathTreeProperty.HEIGHT],
+            node_condition=filter_small_nodes,
+            node_limit=3
+        )
+        self.assertTrue(excel_filename.exists())
+        #excel_filename.unlink()
+
     def tearDown(self) -> None:
         """ Remove directories and files for the test.
         """
 
         for fileinfo in self.test_setup["files"]:
             Path(fileinfo["name"]).unlink()
-        rev_dirs = [directory for directory in self.test_setup["dir"]]
+        rev_dirs = self.test_setup["dir"]
         rev_dirs.reverse()
         for directory in rev_dirs:
             Path(directory).rmdir()
+        rev_dirs.reverse()
 
 
 if __name__ == "__main__":
