@@ -157,6 +157,28 @@ class PathNode():
 
         return not self.is_leaf()
 
+    def is_file(self) -> bool:
+        """ Return true if and only if the node is a file.
+
+        Check if the node is a file.
+
+        Return:
+            True if and only if the node is a file.
+        """
+
+        return not self.is_dir()
+
+    def is_dir(self) -> bool:
+        """ Return true if and only if the node is a directory.
+
+        Check if the node is a directory.
+
+        Return:
+            True if and only if the node is a directory.
+        """
+
+        return self.path.is_dir()
+
     def compute_bottom_up_property(
             self,
             property_name:Union[str,PathTreeProperty],
@@ -781,6 +803,7 @@ class PathTree():
             idx += 1
         return None
 
+    #TODO remove from basic module
     def get_k_largest_nodes(self, k:int, keep_ancestors:bool=False) -> list[PathNode]:
         """ Return the k nodes with larger size.
 
@@ -813,6 +836,7 @@ class PathTree():
                 top_k.remove(node.parent)
         return top_k
 
+    #TODO remove from basic module
     def get_large_nodes(self, limit:int) -> list[PathNode]:
         """ Return the list of nodes larger than the passed limit.
 

@@ -64,6 +64,22 @@ class TestTreeRefactor(ut.TestCase):
                 sol_children[node.path.as_posix()]
             )
 
+    def test_is_functions(self):
+        tree = PathTree(self.test_setup["root"])
+
+        root = list(node.path.as_posix() for node in tree if node.is_root())
+        leaves = list(node.path.as_posix() for node in tree if node.is_leaf())
+        inodes = list(node.path.as_posix() for node in tree if node.is_inode())
+        files = list(node.path.as_posix() for node in tree if node.is_file())
+        dirs = list(node.path.as_posix() for node in tree if node.is_dir())
+
+        self.assertEqual(root,   self.test_solution["root"])
+        self.assertEqual(leaves, self.test_solution["leaves"])
+        self.assertEqual(inodes, self.test_solution["inodes"])
+        self.assertEqual(files,  self.test_solution["files"])
+        self.assertEqual(dirs,   self.test_solution["dirs"])
+
+
     def test_property_computation(self):
         """ Test property computation.
         """
@@ -160,8 +176,8 @@ class TestTreeRefactor(ut.TestCase):
         for node in tree:
             self.assertEqual(tree.get_node(node.path.as_posix()), node)
 
-    def test_csv_export(self):
-        """ Test csv export
+    def test_export(self):
+        """ Test exports
         """
 
         def filter_small_nodes(node):
@@ -190,7 +206,7 @@ class TestTreeRefactor(ut.TestCase):
             node_limit=3
         )
         self.assertTrue(excel_filename.exists())
-        #excel_filename.unlink()
+        excel_filename.unlink()
 
     def tearDown(self) -> None:
         """ Remove directories and files for the test.
