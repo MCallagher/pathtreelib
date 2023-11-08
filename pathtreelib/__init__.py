@@ -386,6 +386,7 @@ class PathTree():
         Returns:
             An iterator for the nodes of the tree.
         """
+
         return self.breadth_first_iter()
 
     def breadth_first_iter(self) -> Iterator:
@@ -825,6 +826,7 @@ class PathTree():
         Return:
             The top-k largest nodes.
         """
+
         top_k = []
         queue = [self.root]
         while len(top_k) < k:
@@ -836,7 +838,6 @@ class PathTree():
                 top_k.remove(node.parent)
         return top_k
 
-    #TODO remove from basic module
     def get_large_nodes(self, limit:int) -> list[PathNode]:
         """ Return the list of nodes larger than the passed limit.
 
@@ -846,6 +847,7 @@ class PathTree():
         Return:
             The nodes with size larger than the passed limit.
         """
+
         large_nodes = []
         queue = [self.root]
         while len(queue) > 0:
@@ -854,6 +856,7 @@ class PathTree():
                 large_nodes.append(node)
                 queue += node.children
         return large_nodes
+    #TODO remove from basic module
 
     def copy(self) -> "PathTree":
         """ Return a deepcopy of the tree and all its nodes.

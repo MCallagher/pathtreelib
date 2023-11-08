@@ -65,6 +65,9 @@ class TestTreeRefactor(ut.TestCase):
             )
 
     def test_is_functions(self):
+        """ Test the is_* functions of PathNode.
+        """
+
         tree = PathTree(self.test_setup["root"])
 
         root = list(node.path.as_posix() for node in tree if node.is_root())
