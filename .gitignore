@@ -3,3 +3,6 @@ __pycache__
 test
 old*
 wip*
+dist
+build
+pathtreelib.egg-info
