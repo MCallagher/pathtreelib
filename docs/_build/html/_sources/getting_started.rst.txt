@@ -36,6 +36,7 @@ set of basic properties is automatically computed, such as height, depth, number
 of nodes, size of the nodes/subtrees.
 
 The tree class provide the following functionalities:
+
 * Different types of iteration on the nodes (e.g. depth-first, breadth-first)
 * Computation of different types of custom properties (e.g. bottom-up, top-down)
 * Pruning of part of the trees
@@ -123,6 +124,7 @@ its subtree are excluded from the iteration.
 Property computation
 --------------------
 There are three types of properties supported:
+
 * Bottom-up: the property is computed on the children (the leaves are the base
 case) and then on the parent (recursive case)
 * Top-down: the property is computed on the parent (the root is the base case)
@@ -135,9 +137,10 @@ Bottom-up property
 ^^^^^^^^^^^^^^^^^^
 We use the height as an example. The height of the nodes is a bottom-up property
 that has two cases:
+
 1. If the node is a leaf, then the height is 0
 2. If the node is an inode, the height is the minimum height of the children +1
-(assuming the property is already computed on the children)
+   (assuming the property is already computed on the children)
 
 The first case is expressed by a function that maps a node into an integer and
 that will be applied only on leaves. The second case is expressed by a function
@@ -159,9 +162,10 @@ Top-down property
 ^^^^^^^^^^^^^^^^^
 We use the depth as an example. The depth of the nodes is a top-down property
 that has two cases:
+
 1. If the node is the root, then the depth is 0
 2. If the node has a parent, the depth is the depth of the parent +1 (assuming
-the property is already computed on the parent)
+   the property is already computed on the parent)
 
 The first case is expressed by a function that maps a node into an integer and
 that will be applied only on the root. The second case is expressed by a
@@ -184,6 +188,7 @@ Individual property
 We use the flag is directory as an example. The property of being a directory
 for a node depends exclusively on the node itself, hence in this case there is
 no more than one case to manage:
+
 1. If the path of the node is a directory then true, else false
 
 The case is expressed by a function that maps a node into a boolean and that
