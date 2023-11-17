@@ -88,7 +88,7 @@ class TestTreeRefactor(ut.TestCase):
         """
 
         property_keys = [
-            PathTreeProperty.HEIGHT,             PathTreeProperty.DEPHT,
+            PathTreeProperty.HEIGHT,             PathTreeProperty.DEPTH,
             PathTreeProperty.NUM_OF_DIRECTORIES, PathTreeProperty.NUM_OF_FILES,
             PathTreeProperty.NUM_OF_INODES,      PathTreeProperty.NUM_OF_LEAVES,
             PathTreeProperty.NUM_OF_NODES,       PathTreeProperty.SIZE,
@@ -193,7 +193,7 @@ class TestTreeRefactor(ut.TestCase):
 
         tree.to_csv(
             csv_filename,
-            properties=[PathTreeProperty.DEPHT, PathTreeProperty.HEIGHT],
+            properties=[PathTreeProperty.DEPTH, PathTreeProperty.HEIGHT],
             node_condition=filter_small_nodes,
             node_limit=3
         )
@@ -204,7 +204,7 @@ class TestTreeRefactor(ut.TestCase):
 
         tree.to_excel(
             excel_filename,
-            properties=[PathTreeProperty.DEPHT, PathTreeProperty.HEIGHT],
+            properties=[PathTreeProperty.DEPTH, PathTreeProperty.HEIGHT],
             node_condition=filter_small_nodes,
             node_limit=3
         )

@@ -22,7 +22,7 @@ class PathTreeProperty(Enum):
 
     HEIGHT = "<height>"
     """ Height (of a node): the minimal distance from the note to a leaf. """
-    DEPHT = "<depth>"
+    DEPTH = "<depth>"
     """ Depth (of a node): the distance from the note to the root. """
     NUM_OF_DIRECTORIES = "<num_dir>"
     """ No. of Directory (of a subtree): the number of directory in the subtree. """
@@ -303,7 +303,7 @@ class PathNode():
         for child in self.children:
             child.compute_individual_property(property_name, property_func)
 
-    def remove_property(self, property_name:str) -> bool:
+    def remove_property(self, property_name:Union[str,PathTreeProperty]) -> bool:
         """ Remove a property of the node.
 
         Params:
@@ -525,7 +525,7 @@ class PathTree():
 
         if property_name == PathTreeProperty.HEIGHT:
             self.__compute_height()
-        elif property_name == PathTreeProperty.DEPHT:
+        elif property_name == PathTreeProperty.DEPTH:
             self.__compute_depth()
         elif property_name == PathTreeProperty.NUM_OF_DIRECTORIES:
             self.__compute_num_of_directories()
@@ -560,9 +560,9 @@ class PathTree():
         """
 
         self.compute_top_down_property(
-            PathTreeProperty.DEPHT,
+            PathTreeProperty.DEPTH,
             lambda root: 0,
-            lambda node, parent: 1 + parent.property[PathTreeProperty.DEPHT]
+            lambda node, parent: 1 + parent.property[PathTreeProperty.DEPTH]
         )
 
     def __compute_num_of_directories(self):
@@ -678,7 +678,7 @@ class PathTree():
         """
 
         self.compute_basic_property(PathTreeProperty.HEIGHT)
-        self.compute_basic_property(PathTreeProperty.DEPHT)
+        self.compute_basic_property(PathTreeProperty.DEPTH)
         self.compute_basic_property(PathTreeProperty.NUM_OF_DIRECTORIES)
         self.compute_basic_property(PathTreeProperty.NUM_OF_FILES)
         self.compute_basic_property(PathTreeProperty.NUM_OF_INODES)
@@ -688,7 +688,7 @@ class PathTree():
         self.compute_basic_property(PathTreeProperty.SIMPLE_SIZE)
 
 
-    def remove_property(self, property_name:str) -> tuple[bool, bool]:
+    def remove_property(self, property_name:Union[str,PathTreeProperty]) -> tuple[bool, bool]:
         """ Remove a property from all the nodes in the tree.
 
         If the property is missing from one node, no exception is raised.
