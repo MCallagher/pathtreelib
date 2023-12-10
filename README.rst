@@ -27,7 +27,7 @@ functionalities:
 For the sake of the following example, suppose the directories are organized as
 follow.
 
-.. image:: img/ptl_example.drawio.png
+.. image:: docs/img/ptl_example.drawio.png
    :align: center
 
 ^^^^^^^^^^^^^^^^^
