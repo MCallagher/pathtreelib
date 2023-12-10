@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PathTreeProperty enum &mdash; pathtreelib 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=01f34227"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="PathTree class" href="PathTree.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pathtreelib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PathNode.html">PathNode class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PathTree.html">PathTree class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">PathTreeProperty enum</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pathtreelib.PathTreeProperty"><code class="docutils literal notranslate"><span class="pre">PathTreeProperty</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pathtreelib.PathTreeProperty.DEPHT"><code class="docutils literal notranslate"><span class="pre">PathTreeProperty.DEPHT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pathtreelib.PathTreeProperty.HEIGHT"><code class="docutils literal notranslate"><span class="pre">PathTreeProperty.HEIGHT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pathtreelib.PathTreeProperty.NUM_OF_DIRECTORIES"><code class="docutils literal notranslate"><span class="pre">PathTreeProperty.NUM_OF_DIRECTORIES</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pathtreelib.PathTreeProperty.NUM_OF_FILES"><code class="docutils literal notranslate"><span class="pre">PathTreeProperty.NUM_OF_FILES</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pathtreelib.PathTreeProperty.NUM_OF_INODES"><code class="docutils literal notranslate"><span class="pre">PathTreeProperty.NUM_OF_INODES</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pathtreelib.PathTreeProperty.NUM_OF_LEAVES"><code class="docutils literal notranslate"><span class="pre">PathTreeProperty.NUM_OF_LEAVES</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pathtreelib.PathTreeProperty.NUM_OF_NODES"><code class="docutils literal notranslate"><span class="pre">PathTreeProperty.NUM_OF_NODES</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pathtreelib.PathTreeProperty.PRUNED"><code class="docutils literal notranslate"><span class="pre">PathTreeProperty.PRUNED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pathtreelib.PathTreeProperty.SIMPLE_SIZE"><code class="docutils literal notranslate"><span class="pre">PathTreeProperty.SIMPLE_SIZE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pathtreelib.PathTreeProperty.SIZE"><code class="docutils literal notranslate"><span class="pre">PathTreeProperty.SIZE</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pathtreelib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">PathTreeProperty enum</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/PathTreeProperty.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pathtreeproperty-enum">
+<h1>PathTreeProperty enum<a class="headerlink" href="#pathtreeproperty-enum" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pathtreelib.PathTreeProperty">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pathtreelib.</span></span><span class="sig-name descname"><span class="pre">PathTreeProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pathtreelib.PathTreeProperty" title="Link to this definition"></a></dt>
+<dd><p>Enumerator class for the tree properties.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pathtreelib.PathTreeProperty.DEPHT">
+<span class="sig-name descname"><span class="pre">DEPHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;depth&gt;'</span></em><a class="headerlink" href="#pathtreelib.PathTreeProperty.DEPHT" title="Link to this definition"></a></dt>
+<dd><p>the distance from the note to the root.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Depth (of a node)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pathtreelib.PathTreeProperty.HEIGHT">
+<span class="sig-name descname"><span class="pre">HEIGHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;height&gt;'</span></em><a class="headerlink" href="#pathtreelib.PathTreeProperty.HEIGHT" title="Link to this definition"></a></dt>
+<dd><p>the minimal distance from the note to a leaf.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Height (of a node)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pathtreelib.PathTreeProperty.NUM_OF_DIRECTORIES">
+<span class="sig-name descname"><span class="pre">NUM_OF_DIRECTORIES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;num_dir&gt;'</span></em><a class="headerlink" href="#pathtreelib.PathTreeProperty.NUM_OF_DIRECTORIES" title="Link to this definition"></a></dt>
+<dd><p>the number of directory in the subtree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No. of Directory (of a subtree)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pathtreelib.PathTreeProperty.NUM_OF_FILES">
+<span class="sig-name descname"><span class="pre">NUM_OF_FILES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;num_file&gt;'</span></em><a class="headerlink" href="#pathtreelib.PathTreeProperty.NUM_OF_FILES" title="Link to this definition"></a></dt>
+<dd><p>the number of files in the subtree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No. of Files (of a subtree)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pathtreelib.PathTreeProperty.NUM_OF_INODES">
+<span class="sig-name descname"><span class="pre">NUM_OF_INODES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;num_inode&gt;'</span></em><a class="headerlink" href="#pathtreelib.PathTreeProperty.NUM_OF_INODES" title="Link to this definition"></a></dt>
+<dd><p>the number of inner nodes in the subtree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No. of inner nodes (of a subtree)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pathtreelib.PathTreeProperty.NUM_OF_LEAVES">
+<span class="sig-name descname"><span class="pre">NUM_OF_LEAVES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;num_leaves&gt;'</span></em><a class="headerlink" href="#pathtreelib.PathTreeProperty.NUM_OF_LEAVES" title="Link to this definition"></a></dt>
+<dd><p>the number of leaves in the subtree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No. of leaves (of a subtree)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pathtreelib.PathTreeProperty.NUM_OF_NODES">
+<span class="sig-name descname"><span class="pre">NUM_OF_NODES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;num_nodes&gt;'</span></em><a class="headerlink" href="#pathtreelib.PathTreeProperty.NUM_OF_NODES" title="Link to this definition"></a></dt>
+<dd><p>the number of nodes in a subtree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No. of nodes (of a subtree)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pathtreelib.PathTreeProperty.PRUNED">
+<span class="sig-name descname"><span class="pre">PRUNED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;pruned&gt;'</span></em><a class="headerlink" href="#pathtreelib.PathTreeProperty.PRUNED" title="Link to this definition"></a></dt>
+<dd><p>true if the node has been virtually removed from the tree, false
+otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pruned status (of a node)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pathtreelib.PathTreeProperty.SIMPLE_SIZE">
+<span class="sig-name descname"><span class="pre">SIMPLE_SIZE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;simple_size&gt;'</span></em><a class="headerlink" href="#pathtreelib.PathTreeProperty.SIMPLE_SIZE" title="Link to this definition"></a></dt>
+<dd><p>the sum of the byte occupied by all the files in
+the subtree, expressed in KB, …, TB accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Size (of a subtree) in simplified format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pathtreelib.PathTreeProperty.SIZE">
+<span class="sig-name descname"><span class="pre">SIZE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;size&gt;'</span></em><a class="headerlink" href="#pathtreelib.PathTreeProperty.SIZE" title="Link to this definition"></a></dt>
+<dd><p>the sum of the byte occupied by all the files in the subtree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Size (of a subtree)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="PathTree.html" class="btn btn-neutral float-left" title="PathTree class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Marco Calandro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

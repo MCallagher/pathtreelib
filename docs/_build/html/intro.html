@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pathtreelib - Tree-based pathlib enhancement &mdash; pathtreelib 0.1.0 documentation</title>
+  <title>Getting started &mdash; pathtreelib 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -21,7 +21,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Getting started" href="intro.html" /> 
+    <link rel="next" title="PathNode class" href="PathNode.html" />
+    <link rel="prev" title="pathtreelib - Tree-based pathlib enhancement" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -32,7 +33,7 @@
 
           
           
-          <a href="#" class="icon icon-home">
+          <a href="index.html" class="icon icon-home">
             pathtreelib
           </a>
 <div role="search">
@@ -44,8 +45,22 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Getting started</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#generate-the-tree">Generate the tree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#node-iterators">Node iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#property-computation">Property computation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bottom-up-properties">Bottom-up properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#top-down-properties">Top-down properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#individual-properties">Individual properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#property-removal">Property removal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pruning">Pruning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#export">Export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Export</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="PathNode.html">PathNode class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PathTree.html">PathTree class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PathTreeProperty.html">PathTreeProperty enum</a></li>
@@ -57,17 +72,17 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">pathtreelib</a>
+          <a href="index.html">pathtreelib</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">pathtreelib - Tree-based pathlib enhancement</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Getting started</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -75,22 +90,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="pathtreelib-tree-based-pathlib-enhancement">
-<h1>pathtreelib - Tree-based pathlib enhancement<a class="headerlink" href="#pathtreelib-tree-based-pathlib-enhancement" title="Link to this heading"></a></h1>
-<p>This module main purpose is to provide a tree structure representation of file
-system directories and files. The main objects are PathTree, which describe a
-tree of directory, and PathNode, which describe a single node of the tree.</p>
-<p>The building block is the Path object from the pathlib module. The Path is then
-wrapped in a PathNode object, which stores explicitly information like
-parent-children relationships and add functionalities like property computation
-and storage. The PathNode objects are connected one another through links stored
-on each node: this means that the structure is not a centralysed but is
-distributed on the nodes. The PathTree provides an interface to query a tree
-made up by the PathNode structure: such structure is fully generated
-automatically at the tree creation starting from the passed root.</p>
-<img alt="_images/ptl_basic.drawio.png" class="align-center" src="_images/ptl_basic.drawio.png" />
-<section id="getting-started">
-<h2>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
+  <section id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h1>
 <p>The main class is PathTree and provides 5 different categories of
 functionalities:</p>
 <ul class="simple">
@@ -104,7 +105,7 @@ functionalities:</p>
 follow.</p>
 <img alt="_images/ptl_example.drawio.png" class="align-center" src="_images/ptl_example.drawio.png" />
 <section id="generate-the-tree">
-<h3>Generate the tree<a class="headerlink" href="#generate-the-tree" title="Link to this heading"></a></h3>
+<h2>Generate the tree<a class="headerlink" href="#generate-the-tree" title="Link to this heading"></a></h2>
 <p>The initialization of the tree generate all the nodes and requires only the
 root.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathtreelib</span> <span class="kn">import</span> <span class="n">PathTree</span>
@@ -113,7 +114,7 @@ root.</p>
 </div>
 </section>
 <section id="node-iterators">
-<h3>Node iterators<a class="headerlink" href="#node-iterators" title="Link to this heading"></a></h3>
+<h2>Node iterators<a class="headerlink" href="#node-iterators" title="Link to this heading"></a></h2>
 <p>Classic breadth-first and depth-first iterators are implemented. Breadth-first
 is used as default iterator in __iter__.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">breadth_first_iter</span><span class="p">():</span>
@@ -156,13 +157,13 @@ does not satisfy a specific condition.</p>
 </div>
 </section>
 <section id="property-computation">
-<h3>Property computation<a class="headerlink" href="#property-computation" title="Link to this heading"></a></h3>
+<h2>Property computation<a class="headerlink" href="#property-computation" title="Link to this heading"></a></h2>
 <p>The supported properties are classified by the type of algorithm used for the
 computation. Currently the library supports three types of properties: bottom-up
 properties, top-down properties, and individual properties. The properties are
 computed on all the nodes and require computation functions.</p>
 <section id="bottom-up-properties">
-<h4>Bottom-up properties<a class="headerlink" href="#bottom-up-properties" title="Link to this heading"></a></h4>
+<h3>Bottom-up properties<a class="headerlink" href="#bottom-up-properties" title="Link to this heading"></a></h3>
 <p>Bottom-up properties are computed on the children first and then on the parent,
 hence are computed from the leaves upward. An example of this kind of properties
 is the height.</p>
@@ -187,7 +188,7 @@ the nodes in the correct order.</p>
 </div>
 </section>
 <section id="top-down-properties">
-<h4>Top-down properties<a class="headerlink" href="#top-down-properties" title="Link to this heading"></a></h4>
+<h3>Top-down properties<a class="headerlink" href="#top-down-properties" title="Link to this heading"></a></h3>
 <p>Top-down properties are computed on the parent first and then on the children,
 hence are computed from the root downward. An example of this kind of property
 is the depth.</p>
@@ -211,7 +212,7 @@ the nodes in the correct order.</p>
 </div>
 </section>
 <section id="individual-properties">
-<h4>Individual properties<a class="headerlink" href="#individual-properties" title="Link to this heading"></a></h4>
+<h3>Individual properties<a class="headerlink" href="#individual-properties" title="Link to this heading"></a></h3>
 <p>Individual property are computed on a node independently from the others, hence
 the order of the computation is irrelevant. An example of this kind of property
 is a flag indicating if the node’s path is a directory.</p>
@@ -228,7 +229,7 @@ is a flag indicating if the node’s path is a directory.</p>
 </div>
 </section>
 <section id="property-removal">
-<h4>Property removal<a class="headerlink" href="#property-removal" title="Link to this heading"></a></h4>
+<h3>Property removal<a class="headerlink" href="#property-removal" title="Link to this heading"></a></h3>
 <p>The properties can also be removed from all nodes of the tree.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">remove_property</span><span class="p">(</span><span class="s2">&quot;height&quot;</span><span class="p">)</span>
 </pre></div>
@@ -236,7 +237,7 @@ is a flag indicating if the node’s path is a directory.</p>
 </section>
 </section>
 <section id="pruning">
-<h3>Pruning<a class="headerlink" href="#pruning" title="Link to this heading"></a></h3>
+<h2>Pruning<a class="headerlink" href="#pruning" title="Link to this heading"></a></h2>
 <p>The pruning allows to reduce the nodes in the tree by removing subtrees that do
 not satisfy a specific condition. The removal of the nodes can be physical,
 links removed from the nodes, or logical, properties added to the node.</p>
@@ -262,7 +263,7 @@ tree changes irreversibely.</p>
 </div>
 </section>
 <section id="export">
-<h3>Export<a class="headerlink" href="#export" title="Link to this heading"></a></h3>
+<h2>Export<a class="headerlink" href="#export" title="Link to this heading"></a></h2>
 <p>The tree can be exported in csv and Excel format allowing a set of
 customization. With basic setting, the export includes the path and the
 properties, however it is possible to filter on the properties and an the nodes.</p>
@@ -272,7 +273,7 @@ properties, however it is possible to filter on the properties and an the nodes.
 </div>
 </section>
 <section id="id1">
-<h3>Export<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<h2>Export<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <p>Analysis of the whole C volume in Windows to find the most space consuming
 folders with holiday pictures (folders with a large number of jpg files).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the whole tree (could take a while if the volume is large)</span>
@@ -308,33 +309,6 @@ folders with holiday pictures (folders with a large number of jpg files).</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Getting started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#generate-the-tree">Generate the tree</a></li>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#node-iterators">Node iterators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#property-computation">Property computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#pruning">Pruning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#export">Export</a></li>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#id1">Export</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="PathNode.html">PathNode class</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="PathNode.html#pathtreelib.PathNode"><code class="docutils literal notranslate"><span class="pre">PathNode</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="PathTree.html">PathTree class</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="PathTree.html#pathtreelib.PathTree"><code class="docutils literal notranslate"><span class="pre">PathTree</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="PathTreeProperty.html">PathTreeProperty enum</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="PathTreeProperty.html#pathtreelib.PathTreeProperty"><code class="docutils literal notranslate"><span class="pre">PathTreeProperty</span></code></a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
 </section>
 </section>
 
@@ -342,7 +316,8 @@ folders with holiday pictures (folders with a large number of jpg files).</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="intro.html" class="btn btn-neutral float-right" title="Getting started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="pathtreelib - Tree-based pathlib enhancement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="PathNode.html" class="btn btn-neutral float-right" title="PathNode class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,7 +1,7 @@
-=============
-Test PathNode
-=============
+==============
+PathNode class
+==============
 
 .. autoclass:: pathtreelib.PathNode
-
-test
+   :members:
+   :special-members: __init__, __str__
