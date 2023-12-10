@@ -86,19 +86,19 @@ class PathNode():
     The children of a node are sorted by: type (directories first, then files),
     path (alphabetically on the file/dir name).
 
-    Instance variables:
+    Attributes:
         path: the path associated to the node
-        parent: the parent directory of the node, as a PathNode object
-        children: the children files/directories of the node, as list of
-            PathNode objects
-        data: a dictionary that can contain custom properties of the node
-            (e.g. height, subtree size, ...)
+        parent: the parent directory of the node, as a :class:`PathNode` object
+        children: the children files/directories of the node, as list of\
+        :class:`PathNode` objects
+        data: a dictionary that can contain custom properties of the node\
+        (e.g. height, subtree size, ...)
     """
 
     def __init__(self, path:Path, parent:Union["PathNode",None]=None) -> None:
         """ Create a new path node and all its subtree.
 
-        Params:
+        Parameters:
             path: the path of the node
             parent: the path of the parent node (if None, it is a root node)
         """
@@ -129,7 +129,7 @@ class PathNode():
 
         Check if the node has a parent node.
 
-        Return:
+        Returns:
             True if and only if the node is root.
         """
 
@@ -140,7 +140,7 @@ class PathNode():
 
         Check if the node has children nodes.
 
-        Return:
+        Returns:
             True if and only if the node is a leaf.
         """
 
@@ -151,7 +151,7 @@ class PathNode():
 
         Check if the node has children nodes.
 
-        Return:
+        Returns:
             True if and only if the node is an inner node.
         """
 
@@ -162,7 +162,7 @@ class PathNode():
 
         Check if the node is a file.
 
-        Return:
+        Returns:
             True if and only if the node is a file.
         """
 
@@ -173,7 +173,7 @@ class PathNode():
 
         Check if the node is a directory.
 
-        Return:
+        Returns:
             True if and only if the node is a directory.
         """
 
@@ -194,29 +194,32 @@ class PathNode():
         Hence there are 2 functions that must be specified: the base case
         function (for leaves), the recursive function (for inner nodes).
 
-        Params:
-            property_name: the name of the property (used as key in property
+        Parameters:
+            property_name: the name of the property (used as key in property\
             dict)
             base_func: the function to compute the property on the leaves
-            recursive_func: the function to compute the property on the inner
+            recursive_func: the function to compute the property on the inner\
             nodes (assuming it is already computed on the leaves)
 
-        Params of base_func:
-            leaf: the current node (as PathNode)
+        Parameters of base_func:
 
-        Params of recursive_func:
-            inode: the current node (as PathNode)
-            children: the list of children (as PathNode) of the current node
+        * leaf (PathNode): the current node
 
-        Code sample for computing the height:
-        ```
-        base_func = lambda node: 0
-        recursive_func = lambda node, children: 1 + min([
-            int(child.property["height"])
-            for child in children
-        ])
-        root.compute_bottom_up_property("height", base_func, recursive_func)
-        ```
+        Parameters of recursive_func:
+
+        * inode (PathNode): the current node
+        * children (list(PathNode)): the list of children of the current node
+
+        Examples::
+
+            Compute the height.
+
+            >>> base_func = lambda node: 0
+            >>> recursive_func = lambda node, children: 1 + min([
+            >>>     int(child.property["height"])
+            >>>     for child in children
+            >>> ])
+            >>> root.compute_bottom_up_property("height", base_func, recursive_func)
         """
 
         if self.is_leaf():
@@ -241,26 +244,29 @@ class PathNode():
         there are 2 functions that must be specified: the root function (for the
         root), the parent function (for not-root nodes).
 
-        Params:
-            property_name: the name of the property (used as key in property
+        Parameters:
+            property_name: the name of the property (used as key in property\
             dict)
             root_func: the function to compute the property on the root
-            parent_func: the function to compute the property on the not-root
+            parent_func: the function to compute the property on the not-root\
             nodes (assuming it is already computed on the parent)
 
-        Params of root_func:
-            root: the current node (as PathNode)
+        Parameters of root_func:
 
-        Params of parent_func:
-            node: the current node (as PathNode)
-            parent: the parent (as PathNode) of the current node
+        * root (PathNode): the current node
 
-        Code sample for computing the depth:
-        ```
-        root_func = lambda root: 0
-        parent_func = lambda node, parent: 1 + parent.property["depth"]
-        root.compute_top_down_property("depth", root_func, parent_func)
-        ```
+        Parameters of parent_func:
+
+        * node (PathNode): the current node
+        * parent (PathNode): the parent of the current node
+
+        Examples::
+
+            Compute the depth.
+
+            >>> root_func = lambda root: 0
+            >>> parent_func = lambda node, parent: 1 + parent.property["depth"]
+            >>> root.compute_top_down_property("depth", root_func, parent_func)
         """
 
         if self.is_root():
@@ -284,19 +290,21 @@ class PathNode():
         exploit information stored in the node property dict (e.g. previously
         computed height).
 
-        Params:
-            property_name: the name of the property (used as key in property
+        Parameters:
+            property_name: the name of the property (used as key in property \
             dict)
             property_func: the function to compute the property on the node
 
-        Params of property_func:
-            node: the current node (as PathNode)
+        Parameters of property_func:
 
-        Code sample for computing the a flag to identify directories:
-        ```
-        property_func = lambda node: node.path.is_dir()
-        root.compute_individual_property("is_dir", property_func)
-        ```
+        * node (PathNode): the current node
+
+        Examples::
+
+            Compute a flag to identify directories.
+
+            >>> property_func = lambda node: node.path.is_dir()
+            >>> root.compute_individual_property("is_dir", property_func)
         """
 
         self.property[property_name] = property_func(self)
@@ -306,11 +314,11 @@ class PathNode():
     def remove_property(self, property_name:Union[str,PathTreeProperty]) -> bool:
         """ Remove a property of the node.
 
-        Params:
+        Parameters:
             property_name: the name of the property to remove.
 
-        Return:
-            True if the property is successfully removed, false if the property
+        Returns:
+            True if the property is successfully removed, false if the property\
             is missing.
         """
 
@@ -325,7 +333,7 @@ class PathNode():
         The pointers to other nodes are copied without modification hence point
         to the same nodes.
 
-        Return:
+        Returns:
             A copy of the node.
         """
 
@@ -336,7 +344,7 @@ class PathNode():
 
         Print the node name then the properties.
 
-        Return:
+        Returns:
             A string describing the node.
         """
 
@@ -354,7 +362,8 @@ class PathTree():
 
     The structure mimic the directory tree but add analytic functionalities.
 
-    Instance variables:
+    Attributes:
+
         root: the root PathNode of the tree
         property: the properties of the tree (equivalent to the root properties)
     """
@@ -362,7 +371,7 @@ class PathTree():
     def __init__(self, root:Union[str, Path, PathNode], skip_properties:bool=False) -> None:
         """ Create a new PathTree, based on the root node.
 
-        Params:
+        Parameters:
             root: the root path
             skip_properties: ignore computation of tree's main properties.
         """
@@ -393,7 +402,7 @@ class PathTree():
         """ Return an iterator on the nodes of the tree using breadth-first
         order.
 
-        Return:
+        Returns:
             An iterator for the nodes of the tree, in breadth-first order.
         """
 
@@ -407,7 +416,7 @@ class PathTree():
         """ Return an iterator on the nodes of the tree using depth-first
         order.
 
-        Return:
+        Returns:
             An iterator for the nodes of the tree, in depth-first order.
         """
 
@@ -423,17 +432,19 @@ class PathTree():
         The nodes that do not satisfy the condition are excluded and so their
         subtree.
 
-        Params:
+        Parameters:
             valid_func: the criteria to keep nodes.
 
-        Return:
+        Returns:
             An iterator that exclude not valid nodes and subtrees.
 
-        Params of valid_func:
-            node: the node to test
-        
+        Parameters of valid_func:
+
+        * node (PathNode): the node to test
+
         Return of valid_func:
-            True if the node is acceptable, false otherwise.
+
+        * True if the node is acceptable, false otherwise.
         """
 
         nodes = [self.root] if valid_func(self.root) else []
@@ -453,19 +464,21 @@ class PathTree():
         This function calls the namesake function of the `PathNode` on the root.
         Check `PathNode.compute_bottom_up_property()` for more details.
 
-        Params:
-            property_name: the name of the property (used as key in property
+        Parameters:
+            property_name: the name of the property (used as key in property\
             dict)
             leaf_func: the function to compute the property on the leaves
-            inode_func: the function to compute the property on the inner
+            inode_func: the function to compute the property on the inner\
             nodes (assuming it is already computed on the leaves)
 
-        Params of leaf_func:
-            leaf: the current node (as PathNode)
+        Parameters of leaf_func:
 
-        Params of inode_func:
-            inode: the current node (as PathNode)
-            children: the list of children (as PathNode) of the current node
+        * leaf (PathNode): the current node
+
+        Parameters of inode_func:
+
+        * inode (PathNode): the current node
+        * children (list(PathNode)): the list of children of the current node
         """
 
         self.root.compute_bottom_up_property(property_name, leaf_func, inode_func)
@@ -481,19 +494,21 @@ class PathTree():
         This function calls the namesake function of the `PathNode` on the root.
         Check `PathNode.compute_top_down_property()` for more details.
 
-        Params:
-            property_name: the name of the property (used as key in property
+        Parameters:
+            property_name: the name of the property (used as key in property\
             dict)
             root_func: the function to compute the property on the root
-            notroot_func: the function to compute the property on the not-root
+            notroot_func: the function to compute the property on the not-root\
             nodes (assuming it is already computed on the parent)
 
-        Params of root_func:
-            root: the current node (as PathNode)
+        Parameters of root_func:
 
-        Params of notroot_func:
-            node: the current node (as PathNode)
-            parent: the parent (as PathNode) of the current node
+        * root (PathNode): the current node
+
+        Parameters of notroot_func:
+
+        * node (PathNode): the current node
+        * parent (PathNode): the parent of the current node
         """
 
         self.root.compute_top_down_property(property_name, root_func, notroot_func)
@@ -508,19 +523,26 @@ class PathTree():
         This function calls the namesake function of the `PathNode` on the root.
         Check `PathNode.compute_individual_property()` for more details.
 
-        Params:
-            property_name: the name of the property (used as key in property
+        Parameters:
+            property_name: the name of the property (used as key in property\
             dict)
             property_func: the function to compute the property on the node
 
-        Params of property_func:
-            node: the current node (as PathNode)
+        Parameters of property_func:
+
+        * node: the current node (as PathNode)
         """
 
         self.root.compute_individual_property(property_name, property_func)
 
     def compute_basic_property(self, property_name:PathTreeProperty) -> None:
         """ Compute a basic property, contained in `PathTreeProperty` enum.
+
+        If the property specified is PathTreeProperty.PRUNED, this function is
+        a nop.
+
+        Parameters:
+            property_name: the name of the basic property to compute
         """
 
         if property_name == PathTreeProperty.HEIGHT:
@@ -541,6 +563,8 @@ class PathTree():
             self.__compute_size()
         elif property_name == PathTreeProperty.SIMPLE_SIZE:
             self.__compute_simple_size()
+        elif property_name == PathTreeProperty.PRUNED:
+            pass
 
     def __compute_height(self):
         """ Compute the height of the nodes in the tree.
@@ -668,13 +692,14 @@ class PathTree():
         """ Compute the basic properties for the nodes of the tree.
 
         The basic properties are:
-        - height of the nodes
-        - depth of the nodes
-        - number of directories in the nodes' subtrees
-        - number of files in the nodes' subtrees
-        - number of nodes in the nodes' subtrees
-        - size (in bytes) of the nodes' subtrees
-        - simple size (in KB...TB) of the nodes' subtrees
+
+        * height of the nodes
+        * depth of the nodes
+        * number of directories in the nodes' subtrees
+        * number of files in the nodes' subtrees
+        * number of nodes in the nodes' subtrees
+        * size (in bytes) of the nodes' subtrees
+        * simple size (in KB...TB) of the nodes' subtrees
         """
 
         self.compute_basic_property(PathTreeProperty.HEIGHT)
@@ -693,14 +718,15 @@ class PathTree():
 
         If the property is missing from one node, no exception is raised.
 
-        Params:
+        Parameters:
             property_name: the name of the property to remove.
 
-        Return:
+        Returns:
             A tuple containing two booleans:
-                1. True if the property appeared in all nodes, false otherwise
-                2. True if the property appeared in at least one node, false
-                otherwise
+
+            * True if the property appeared in all nodes, false otherwise
+            * True if the property appeared in at least one node, false\
+            otherwise
         """
 
         in_all_nodes = True
@@ -721,14 +747,17 @@ class PathTree():
 
         Note that the properties of the nodes are not recomputed.
 
-        Params:
-            keep_condition: the boolean function that assess if a node, and its
+        Parameters:
+            keep_condition: the boolean function that assess if a node, and its\
             subtree, should be kept or pruned.
 
-        Params of keep_condition:
-            node: the node to check.
+        Parameters of keep_condition:
+
+        * node: the node to check.
+
         Return of keep_condition:
-            True if the node (and subtree) must be kept, false if it must be
+
+        * True if the node (and subtree) must be kept, false if it must be\
             pruned.
         """
 
@@ -756,15 +785,18 @@ class PathTree():
         condition is checked and if it is not satisfied all the corresponding
         subtree is logically removed from the tree.
 
-        Params:
-            keep_condition: the boolean function that assess if a node, and its
+        Parameters:
+            keep_condition: the boolean function that assess if a node, and its\
             subtree, should be kept or pruned.
 
-        Params of keep_condition:
-            node: the node to check.
+        Parameters of keep_condition:
+
+        * node: the node to check.
+
         Return of keep_condition:
-            True if the node (and subtree) must be kept, false if it must be
-            pruned.
+
+        * True if the node (and subtree) must be kept, false if it must be\
+        pruned.
         """
 
         self.root.compute_top_down_property(
@@ -778,11 +810,11 @@ class PathTree():
     def get_node(self, path:Union[str,Path]) -> Union[PathNode, None]:
         """ Return the PathNode corresponding to the passed Path.
 
-        Params:
+        Parameters:
             path: the path to search in the tree
         
-        Return:
-            The PathNode corresponding to the passed Path if exists, None
+        Returns:
+            The PathNode corresponding to the passed Path if exists, None\
             otherwise.
         """
 
@@ -807,7 +839,7 @@ class PathTree():
     def copy(self) -> "PathTree":
         """ Return a deepcopy of the tree and all its nodes.
 
-        Return:
+        Returns:
             A deepcopy of the tree.
         """
 
@@ -827,7 +859,7 @@ class PathTree():
 
         Print the property of the root.
 
-        Return:
+        Returns:
             A string describing the tree.
         """
 
@@ -846,13 +878,13 @@ class PathTree():
         to the high number of nodes a directory tree can have, by default, the
         export is limited to the first 1 million nodes.
 
-        Params:
+        Parameters:
             csvfile: the name of the csv for the export.
-            properties: the list of properties to include in the export. If None
-            all parameters are included.
-            node_condition: the condition a node must meet to be exported (by
+            properties: the list of properties to include in the export. If\
+            None all parameters are included.
+            node_condition: the condition a node must meet to be exported (by\
             default all nodes are exported).
-            node_limit: the max number of nodes that can be exported. If <= 0,
+            node_limit: the max number of nodes that can be exported. If <= 0,\
             no limitation is applied.
         """
 
@@ -898,13 +930,13 @@ class PathTree():
         to the high number of nodes a directory tree can have, by default, the
         export is limited to the first 1 million nodes.
 
-        Params:
+        Parameters:
             excelfile: the name of the Excel for the export.
-            properties: the list of properties to include in the export. If None
-            all parameters are included.
-            node_condition: the condition a node must meet to be exported (by
+            properties: the list of properties to include in the export. If\
+            None all parameters are included.
+            node_condition: the condition a node must meet to be exported (by\
             default all nodes are exported).
-            node_limit: the max number of nodes that can be exported. If <= 0,
+            node_limit: the max number of nodes that can be exported. If <= 0,\
             no limitation is applied.
         """
 
