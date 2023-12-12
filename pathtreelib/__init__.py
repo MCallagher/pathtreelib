@@ -822,13 +822,18 @@ class PathTree():
             path = Path(path)
         parts = path.parts
         node = self.root
+
         idx = 1
+        if node.path == Path("."):
+            idx = 0
+
         found = True
         while found:
             if path == node.path:
                 return node
             found = False
             for child in node.children:
+                print(f"compare part {idx} between '{parts}' and '{child.path.parts}'")
                 if parts[idx] == child.path.parts[idx]:
                     node = child
                     found = True
