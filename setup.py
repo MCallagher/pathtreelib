@@ -9,7 +9,7 @@ with open("README.rst", "r", encoding="utf8") as f:
 setup(
     name="pathtreelib",
     version="0.1.0",
-    description="An tree-based extension to pathlib",
+    description="A tree-based extension to pathlib",
     long_description=readme,
     long_description_content_type="text/x-rst",
     url="https://github.com/MCallagher/pathtreelib",
