@@ -11,7 +11,7 @@ setup(
     version="0.1.0",
     description="An tree-based extension to pathlib",
     long_description=readme,
-    long_description_content_type="text/markdown",
+    long_description_content_type="text/x-rst",
     url="https://github.com/MCallagher/pathtreelib",
     project_urls={
         "Documentation": "https://pathtreelib.readthedocs.io/en/latest/",
