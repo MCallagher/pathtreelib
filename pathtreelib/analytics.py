@@ -66,13 +66,19 @@ class PathTreeAnalytics(PathTree):
 def main():
     """ Run a basic test on the pwd.
     The results of the test are printed and can be exported in csv and Excel.
+
+    It is possible to pass the following parameters:
+
+    * -k, --k: the number of large nodes requested.
+    * -x, --excel: the Excel file for export (only if specified)
+    * -c, --csv: The csv file for export (only if specified)
     """
 
     # Parse command line parameters
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-k", "--k",     type=int, default="10", 
-        help="The number of large Path to examine"
+        help="The number of large Path requested"
     )
     parser.add_argument(
         "-x", "--excel", type=str, default="",
