@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Runnable modules &mdash; pathtreelib 0.1.0 documentation</title>
+  <title>Runnable modules &mdash; pathtreelib 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=01f34227"></script>
+        <script src="_static/documentation_options.js?v=938c9ccc"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -90,28 +90,28 @@
              
   <section id="runnable-modules">
 <h1>Runnable modules<a class="headerlink" href="#runnable-modules" title="Link to this heading"></a></h1>
-<p class="linemarker linemarker-5">The basic functionalities of the library are provided as runnable modules. This
+<p>The basic functionalities of the library are provided as runnable modules. This
 allows to quickly perform analysis on-the-spot without the need of writing code.</p>
 <section id="module-pathtreelib.__main__">
 <span id="pathtreelib-runnnable"></span><h2>pathtreelib runnnable<a class="headerlink" href="#module-pathtreelib.__main__" title="Link to this heading"></a></h2>
-<p class="linemarker linemarker-1">Runnable module for pathtreelib.</p>
+<p>Runnable module for pathtreelib.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pathtreelib.__main__.main">
 <span class="sig-prename descclassname"><span class="pre">pathtreelib.__main__.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pathtreelib.__main__.main" title="Link to this definition"></a></dt>
-<dd><p class="linemarker linemarker-1">Compute the tree on specified directory.
+<dd><p>Compute the tree on specified directory.
 The creation of the tree automatically computes the basic properties on
 all nodes. The properties compued on the root, that are valuable information
 to understand the structure of the tree, are printed (with exclusion of
 depth and height that would be less useful). The nodes of the computed tree
 can be exported in csv and Excel.</p>
-<p class="linemarker linemarker-8">It is possible to pass the following parameters:</p>
+<p>It is possible to pass the following parameters:</p>
 <ul class="simple">
-<li><p class="linemarker linemarker-10">-d, –dir: the directory to analyse</p></li>
-<li><p class="linemarker linemarker-11">-n, –n: the number of nodes to export (see node_limit in to_csv and in to_excel)</p></li>
-<li><p class="linemarker linemarker-12">-x, –excel: the Excel file for export (only if specified)</p></li>
-<li><p class="linemarker linemarker-13">-c, –csv: the csv file for export (only if specified)</p></li>
+<li><p>-d, –dir: the directory to analyse</p></li>
+<li><p>-n, –n: the number of nodes to export (see node_limit in to_csv and in to_excel)</p></li>
+<li><p>-x, –excel: the Excel file for export (only if specified)</p></li>
+<li><p>-c, –csv: the csv file for export (only if specified)</p></li>
 </ul>
-<p class="linemarker linemarker-15">Examples:</p>
+<p>Examples:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pathtreelib</span> <span class="o">-</span><span class="n">d</span> <span class="o">.</span> <span class="o">-</span><span class="n">n</span> <span class="mi">1000</span> <span class="o">-</span><span class="n">x</span> <span class="n">test</span><span class="o">.</span><span class="n">xlsx</span> <span class="o">-</span><span class="n">c</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
 <span class="go">    &lt;num_dir&gt;     &gt;     218</span>
 <span class="go">    &lt;num_file&gt;    &gt;     421</span>
@@ -127,24 +127,24 @@ can be exported in csv and Excel.</p>
 </section>
 <section id="module-pathtreelib.analytics.__main__">
 <span id="pathtreelib-analytics-runnnable"></span><h2>pathtreelib.analytics runnnable<a class="headerlink" href="#module-pathtreelib.analytics.__main__" title="Link to this heading"></a></h2>
-<p class="linemarker linemarker-1">Runnable module for pathtreelib.analytics.</p>
+<p>Runnable module for pathtreelib.analytics.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pathtreelib.analytics.__main__.main">
 <span class="sig-prename descclassname"><span class="pre">pathtreelib.analytics.__main__.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pathtreelib.analytics.__main__.main" title="Link to this definition"></a></dt>
-<dd><p class="linemarker linemarker-1">Run a basic analysis on the specified directory.
+<dd><p>Run a basic analysis on the specified directory.
 The analysis consist in computing the largest nodes in the tree, with
 respect to their size. To avoid redundancy, in the extracted nodes there is
 no pair of nodes where one node is the ancestor of the other. The results
 of the test are printed and the list of extracted large nodes can be
 exported in csv and Excel.</p>
-<p class="linemarker linemarker-8">It is possible to pass the following parameters:</p>
+<p>It is possible to pass the following parameters:</p>
 <ul class="simple">
-<li><p class="linemarker linemarker-10">-d, –dir: the directory to analyse</p></li>
-<li><p class="linemarker linemarker-11">-k, –k: the number of large nodes requested</p></li>
-<li><p class="linemarker linemarker-12">-x, –excel: the Excel file for export (only if specified)</p></li>
-<li><p class="linemarker linemarker-13">-c, –csv: The csv file for export (only if specified)</p></li>
+<li><p>-d, –dir: the directory to analyse</p></li>
+<li><p>-k, –k: the number of large nodes requested</p></li>
+<li><p>-x, –excel: the Excel file for export (only if specified)</p></li>
+<li><p>-c, –csv: The csv file for export (only if specified)</p></li>
 </ul>
-<p class="linemarker linemarker-15">Examples:</p>
+<p>Examples:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pathtreelib</span><span class="o">.</span><span class="n">analytics</span> <span class="o">-</span><span class="n">d</span> <span class="o">.</span> <span class="o">-</span><span class="n">k</span> <span class="mi">3</span> <span class="o">-</span><span class="n">x</span> <span class="n">test</span><span class="o">.</span><span class="n">xlsx</span> <span class="o">-</span><span class="n">c</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
 <span class="go">    gordon/pictures/equipment      &gt;   3 GB</span>
 <span class="go">    gordon/black mesa/research.pdf &gt;  15 MB</span>

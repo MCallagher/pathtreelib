@@ -12,11 +12,16 @@ functionalities:
 * Pruning of part of the trees
 * Exporting in csv and Excel
 
-For the sake of the following example, suppose the directories are organized as
+For the sake of the following examples, suppose the directories are organized as
 follow.
 
 .. image:: img/ptl_example.drawio.png
    :align: center
+
+Moreover, the analytics subpackage provide the class PathTreeAnalytics, a
+subclass of PathTree, that contains few additional methods that perform more
+advanced analysis on the tree. Few usage examples of such methods are provided
+below.
 
 ^^^^^^^^^^^^^^^^^
 Generate the tree
@@ -202,9 +207,9 @@ properties, however it is possible to filter on the properties and an the nodes.
 >>> tree.to_excel(csvfile="test.xlsx", properties["heigth", "depth", "is_dir"])
 
 
-^^^^^^
-Export
-^^^^^^
+^^^^^^^
+Example
+^^^^^^^
 
 Analysis of the whole C volume in Windows to find the most space consuming
 folders with holiday pictures (folders with a large number of jpg files).
@@ -242,3 +247,21 @@ folders with holiday pictures (folders with a large number of jpg files).
       properties=["num_of_jpg", PathTreeProperty.SIZE],
       node_condition=lambda node: node.property["photo_dir"]
    )
+
+Quick analysis of the whole C volume in Windows to get the largest nodes,
+exploiting the analytics module.
+
+.. code-block:: python
+
+   # Generate the whole tree (could take a while if the volume is large)
+   tree = PathTreeAnalytics("C:/")
+
+   # Get nodes larger than 100 GB, if any
+   print("Nodes larger than 100 GB")
+   for node in tree.get_large_nodes(limit=100*1024**3):
+      print(node.path.as_posix())
+
+   # Get the top 10 largest nodes (without ancestors)
+   print("The top 10 largest nodes")
+   for node in tree.get_k_largest_nodes(k=10):
+      print(f"{node.property[PathTreeProperty.SIMPLE_SIZE]} - {node.path.as_posix()}")

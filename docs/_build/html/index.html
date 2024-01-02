@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pathtreelib - Tree-based pathlib enhancement &mdash; pathtreelib 0.1.0 documentation</title>
+  <title>pathtreelib - Tree-based pathlib enhancement &mdash; pathtreelib 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=01f34227"></script>
+        <script src="_static/documentation_options.js?v=938c9ccc"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -79,10 +79,10 @@
              
   <section id="pathtreelib-tree-based-pathlib-enhancement">
 <h1>pathtreelib - Tree-based pathlib enhancement<a class="headerlink" href="#pathtreelib-tree-based-pathlib-enhancement" title="Link to this heading"></a></h1>
-<p class="linemarker linemarker-6">This module main purpose is to provide a tree structure representation of file
+<p>This module main purpose is to provide a tree structure representation of file
 system directories and files. The main objects are PathTree, which describe a
 tree of directory, and PathNode, which describe a single node of the tree.</p>
-<p class="linemarker linemarker-10">The building block is the Path object from the pathlib module. The Path is then
+<p>The building block is the Path object from the pathlib module. The Path is then
 wrapped in a PathNode object, which stores explicitly information like
 parent-children relationships and add functionalities like property computation
 and storage. The PathNode objects are connected one another through links stored
@@ -93,21 +93,25 @@ automatically at the tree creation starting from the passed root.</p>
 <img alt="_images/ptl_basic.drawio.png" class="align-center" src="_images/ptl_basic.drawio.png" />
 <section id="getting-started">
 <h2>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
-<p class="linemarker linemarker-6">The main class is PathTree and provides 5 different categories of
+<p>The main class is PathTree and provides 5 different categories of
 functionalities:</p>
 <ul class="simple">
-<li><p class="linemarker linemarker-9">Generate the structure of PathNodes (at tree initialization)</p></li>
-<li><p class="linemarker linemarker-10">Different types of iteration on the nodes (e.g. depth-first, breadth-first)</p></li>
-<li><p class="linemarker linemarker-11">Computation of different types of custom properties (e.g. bottom-up, top-down)</p></li>
-<li><p class="linemarker linemarker-12">Pruning of part of the trees</p></li>
-<li><p class="linemarker linemarker-13">Exporting in csv and Excel</p></li>
+<li><p>Generate the structure of PathNodes (at tree initialization)</p></li>
+<li><p>Different types of iteration on the nodes (e.g. depth-first, breadth-first)</p></li>
+<li><p>Computation of different types of custom properties (e.g. bottom-up, top-down)</p></li>
+<li><p>Pruning of part of the trees</p></li>
+<li><p>Exporting in csv and Excel</p></li>
 </ul>
-<p class="linemarker linemarker-15">For the sake of the following example, suppose the directories are organized as
+<p>For the sake of the following examples, suppose the directories are organized as
 follow.</p>
 <img alt="_images/ptl_example.drawio.png" class="align-center" src="_images/ptl_example.drawio.png" />
+<p>Moreover, the analytics subpackage provide the class PathTreeAnalytics, a
+subclass of PathTree, that contains few additional methods that perform more
+advanced analysis on the tree. Few usage examples of such methods are provided
+below.</p>
 <section id="generate-the-tree">
 <h3>Generate the tree<a class="headerlink" href="#generate-the-tree" title="Link to this heading"></a></h3>
-<p class="linemarker linemarker-25">The initialization of the tree generate all the nodes and requires only the
+<p>The initialization of the tree generate all the nodes and requires only the
 root.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathtreelib</span> <span class="kn">import</span> <span class="n">PathTree</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">PathTree</span><span class="p">(</span><span class="s2">&quot;gordon&quot;</span><span class="p">)</span>
@@ -116,7 +120,7 @@ root.</p>
 </section>
 <section id="node-iterators">
 <h3>Node iterators<a class="headerlink" href="#node-iterators" title="Link to this heading"></a></h3>
-<p class="linemarker linemarker-35">Classic breadth-first and depth-first iterators are implemented. Breadth-first
+<p>Classic breadth-first and depth-first iterators are implemented. Breadth-first
 is used as default iterator in __iter__.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">breadth_first_iter</span><span class="p">():</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
@@ -142,7 +146,7 @@ is used as default iterator in __iter__.</p>
 <span class="go">    gordon/pictures/holiday</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-62">An additional iterator, based on breadth-first, allows to skip subtrees that
+<p>An additional iterator, based on breadth-first, allows to skip subtrees that
 does not satisfy a specific condition.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">valid_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="n">PathTreeProperty</span><span class="o">.</span><span class="n">DEPTH</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">validated_iter</span><span class="p">(</span><span class="n">valid_func</span><span class="p">):</span>
@@ -159,28 +163,28 @@ does not satisfy a specific condition.</p>
 </section>
 <section id="property-computation">
 <h3>Property computation<a class="headerlink" href="#property-computation" title="Link to this heading"></a></h3>
-<p class="linemarker linemarker-80">The supported properties are classified by the type of algorithm used for the
+<p>The supported properties are classified by the type of algorithm used for the
 computation. Currently the library supports three types of properties: bottom-up
 properties, top-down properties, and individual properties. The properties are
 computed on all the nodes and require computation functions.</p>
 <section id="bottom-up-properties">
 <h4>Bottom-up properties<a class="headerlink" href="#bottom-up-properties" title="Link to this heading"></a></h4>
-<p class="linemarker linemarker-89">Bottom-up properties are computed on the children first and then on the parent,
+<p>Bottom-up properties are computed on the children first and then on the parent,
 hence are computed from the leaves upward. An example of this kind of properties
 is the height.</p>
-<p class="linemarker linemarker-93">The computation requires the function to compute the property on a leaf</p>
+<p>The computation requires the function to compute the property on a leaf</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">leaf_func</span><span class="p">(</span><span class="n">leaf</span><span class="p">:</span><span class="n">PathNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="mi">0</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-98">and the function to compute the property on an inode, assuming it is already
+<p>and the function to compute the property on an inode, assuming it is already
 computed on its children,</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">inode_func</span><span class="p">(</span><span class="n">inode</span><span class="p">:</span><span class="n">PathNode</span><span class="p">,</span> <span class="n">children</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">PathNode</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>   <span class="n">children_min_height</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">child</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span>   <span class="k">return</span> <span class="n">children_min_height</span> <span class="o">+</span> <span class="mi">1</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-105">then the property computation function ensures that the property is computed on
+<p>then the property computation function ensures that the property is computed on
 the nodes in the correct order.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">compute_bottom_up_property</span><span class="p">(</span><span class="s2">&quot;height&quot;</span><span class="p">,</span> <span class="n">leaf_func</span><span class="p">,</span> <span class="n">inode_func</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">])</span>
@@ -190,21 +194,21 @@ the nodes in the correct order.</p>
 </section>
 <section id="top-down-properties">
 <h4>Top-down properties<a class="headerlink" href="#top-down-properties" title="Link to this heading"></a></h4>
-<p class="linemarker linemarker-116">Top-down properties are computed on the parent first and then on the children,
+<p>Top-down properties are computed on the parent first and then on the children,
 hence are computed from the root downward. An example of this kind of property
 is the depth.</p>
-<p class="linemarker linemarker-120">The computation requires the function to compute the property on the root</p>
+<p>The computation requires the function to compute the property on the root</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">root_func</span><span class="p">(</span><span class="n">root</span><span class="p">:</span><span class="n">PathNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="mi">0</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-125">and the function to compute the property on all other nodes, assuming it is
+<p>and the function to compute the property on all other nodes, assuming it is
 already computed on its parent,</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">notroot_func</span><span class="p">(</span><span class="n">node</span><span class="p">:</span><span class="n">PathNode</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span><span class="n">PathNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">parent</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-131">then the property computation function ensures that the property is computed on
+<p>then the property computation function ensures that the property is computed on
 the nodes in the correct order.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">compute_top_down_property</span><span class="p">(</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">root_func</span><span class="p">,</span> <span class="n">notroot_func</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">])</span>
@@ -214,15 +218,15 @@ the nodes in the correct order.</p>
 </section>
 <section id="individual-properties">
 <h4>Individual properties<a class="headerlink" href="#individual-properties" title="Link to this heading"></a></h4>
-<p class="linemarker linemarker-142">Individual property are computed on a node independently from the others, hence
+<p>Individual property are computed on a node independently from the others, hence
 the order of the computation is irrelevant. An example of this kind of property
 is a flag indicating if the node’s path is a directory.</p>
-<p class="linemarker linemarker-146">The computation requires the function to compute the property on a generic node</p>
+<p>The computation requires the function to compute the property on a generic node</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">property_func</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-151">then the property computation function applies the property on all the nodes.</p>
+<p>then the property computation function applies the property on all the nodes.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">compute_individual_property</span><span class="p">(</span><span class="s2">&quot;is_dir&quot;</span><span class="p">,</span> <span class="n">property_func</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="s2">&quot;is_dir&quot;</span><span class="p">])</span>
 <span class="go">    True</span>
@@ -231,7 +235,7 @@ is a flag indicating if the node’s path is a directory.</p>
 </section>
 <section id="property-removal">
 <h4>Property removal<a class="headerlink" href="#property-removal" title="Link to this heading"></a></h4>
-<p class="linemarker linemarker-161">The properties can also be removed from all nodes of the tree.</p>
+<p>The properties can also be removed from all nodes of the tree.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">remove_property</span><span class="p">(</span><span class="s2">&quot;height&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -239,14 +243,14 @@ is a flag indicating if the node’s path is a directory.</p>
 </section>
 <section id="pruning">
 <h3>Pruning<a class="headerlink" href="#pruning" title="Link to this heading"></a></h3>
-<p class="linemarker linemarker-169">The pruning allows to reduce the nodes in the tree by removing subtrees that do
+<p>The pruning allows to reduce the nodes in the tree by removing subtrees that do
 not satisfy a specific condition. The removal of the nodes can be physical,
 links removed from the nodes, or logical, properties added to the node.</p>
-<p class="linemarker linemarker-173">An example of condition is a limit on the depth.</p>
+<p>An example of condition is a limit on the depth.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">keep_condition</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="n">PathTreeProperty</span><span class="o">.</span><span class="n">DEPTH</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">2</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-177">The logical pruning add the pruning propery but does not change the structure of
+<p>The logical pruning add the pruning propery but does not change the structure of
 the tree and is reversable.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">logical_pruning</span><span class="p">(</span><span class="n">keep_condition</span><span class="o">=</span><span class="n">keep_condition</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">)))</span>
@@ -255,7 +259,7 @@ the tree and is reversable.</p>
 <span class="go">    7</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-186">The physical pruning removes the links between nodes, hence the structure of the
+<p>The physical pruning removes the links between nodes, hence the structure of the
 tree changes irreversibely.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">physical_pruning</span><span class="p">(</span><span class="n">keep_condition</span><span class="o">=</span><span class="n">keep_condition</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">)))</span>
@@ -265,7 +269,7 @@ tree changes irreversibely.</p>
 </section>
 <section id="export">
 <h3>Export<a class="headerlink" href="#export" title="Link to this heading"></a></h3>
-<p class="linemarker linemarker-197">The tree can be exported in csv and Excel format allowing a set of
+<p>The tree can be exported in csv and Excel format allowing a set of
 customization. With basic setting, the export includes the path and the
 properties, however it is possible to filter on the properties and an the nodes.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csvfile</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">,</span> <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;heigth&quot;</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="s2">&quot;is_dir&quot;</span><span class="p">])</span>
@@ -273,9 +277,9 @@ properties, however it is possible to filter on the properties and an the nodes.
 </pre></div>
 </div>
 </section>
-<section id="id1">
-<h3>Export<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
-<p class="linemarker linemarker-209">Analysis of the whole C volume in Windows to find the most space consuming
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
+<p>Analysis of the whole C volume in Windows to find the most space consuming
 folders with holiday pictures (folders with a large number of jpg files).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the whole tree (could take a while if the volume is large)</span>
 <span class="n">tree</span> <span class="o">=</span> <span class="n">PathTree</span><span class="p">(</span><span class="s2">&quot;C:/&quot;</span><span class="p">)</span>
@@ -310,6 +314,22 @@ folders with holiday pictures (folders with a large number of jpg files).</p>
 <span class="p">)</span>
 </pre></div>
 </div>
+<p>Quick analysis of the whole C volume in Windows to get the largest nodes,
+exploiting the analytics module.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the whole tree (could take a while if the volume is large)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">PathTreeAnalytics</span><span class="p">(</span><span class="s2">&quot;C:/&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get nodes larger than 100 GB, if any</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nodes larger than 100 GB&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">get_large_nodes</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="o">*</span><span class="mi">1024</span><span class="o">**</span><span class="mi">3</span><span class="p">):</span>
+   <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+
+<span class="c1"># Get the top 10 largest nodes (without ancestors)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The top 10 largest nodes&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">get_k_largest_nodes</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="n">PathTreeProperty</span><span class="o">.</span><span class="n">SIMPLE_SIZE</span><span class="p">]</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -319,7 +339,7 @@ folders with holiday pictures (folders with a large number of jpg files).</p>
 <li class="toctree-l2"><a class="reference internal" href="intro.html#property-computation">Property computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="intro.html#pruning">Pruning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="intro.html#export">Export</a></li>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#id1">Export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#example">Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="runnable.html">Runnable modules</a><ul>
