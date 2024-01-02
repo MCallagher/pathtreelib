@@ -8,19 +8,19 @@ with open("README.rst", "r", encoding="utf8") as f:
 
 setup(
     name="pathtreelib",
-    version="0.2.0",
+    version="0.2.1",
     description="A tree-based extension to pathlib",
     long_description=readme,
     long_description_content_type="text/x-rst",
     url="https://github.com/MCallagher/pathtreelib",
     project_urls={
-        "Documentation": "https://pathtreelib.readthedocs.io/en/latest/",
+        "Documentation": "https://pathtreelib.readthedocs.io/en/stable/",
         "source": "https://github.com/MCallagher/pathtreelib"
     },
     author="Marco Calandro",
     author_email="marco.calandro@mensa.it",
     license="MIT",
-    packages=["pathtreelib"],
+    packages=["pathtreelib", "pathtreelib.analytics"],
     install_requires=["xlsxwriter>=3.1.9"],
     classifiers=[
         "Development Status :: 3 - Alpha",
