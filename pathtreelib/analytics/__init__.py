@@ -1,8 +1,6 @@
 """ Set of analytics tools for PathTree.
 """
 
-import argparse
-
 from pathtreelib import PathNode, PathTree, PathTreeProperty
 
 
@@ -22,7 +20,7 @@ class PathTreeAnalytics(PathTree):
         tree and highlight the large nodes, ignoring (typically) less
         meaningfull ancestors.
 
-        Params:
+        Parameters:
             k: the number of largest nodes requested.
             keep_ancestors: if true, return exactly the k largest nodes, if
             false, return the k largest nodes, taking at max one node for
@@ -46,7 +44,7 @@ class PathTreeAnalytics(PathTree):
     def get_large_nodes(self, limit:int) -> list[PathNode]:
         """ Return the list of nodes larger than the passed limit.
 
-        Params:
+        Parameters:
             limit: the limit size, nodes with larger size will be included.
 
         Return:
@@ -61,53 +59,3 @@ class PathTreeAnalytics(PathTree):
                 large_nodes.append(node)
                 queue += node.children
         return large_nodes
-
-
-def main():
-    """ Run a basic test on the pwd.
-    The results of the test are printed and can be exported in csv and Excel.
-
-    It is possible to pass the following parameters:
-
-    * -k, --k: the number of large nodes requested.
-    * -x, --excel: the Excel file for export (only if specified)
-    * -c, --csv: The csv file for export (only if specified)
-    """
-
-    # Parse command line parameters
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-k", "--k",     type=int, default="10", 
-        help="The number of large Path requested"
-    )
-    parser.add_argument(
-        "-x", "--excel", type=str, default="",
-        help="The Excel file for export (only if specified)"
-    )
-    parser.add_argument(
-        "-c", "--csv",   type=str, default="",
-        help="The csv file for export (only if specified)"
-    )
-    params = parser.parse_args()
-
-    # Create tree and perform analysis
-    tree = PathTreeAnalytics(".")
-    largest = tree.get_k_largest_nodes(params.k)
-
-    # Pretty print results
-    max_len = max(list(len(node.path.as_posix()) for node in largest))
-    for node in largest:
-        print(
-            f"{node.path.as_posix().ljust(max_len)} > " +
-            f"{node.property[PathTreeProperty.SIMPLE_SIZE]:>6s}"
-        )
-
-    # Export results
-    if params.excel != "":
-        tree.to_excel(params.excel, node_condition=lambda node: node in largest)
-    if params.csv != "":
-        tree.to_csv(params.csv, node_condition=lambda node: node in largest)
-
-
-if __name__ == "__main__":
-    main()

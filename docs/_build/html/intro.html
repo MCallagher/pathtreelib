@@ -21,7 +21,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="PathNode class" href="PathNode.html" />
+    <link rel="next" title="Runnable modules" href="runnable.html" />
     <link rel="prev" title="pathtreelib - Tree-based pathlib enhancement" href="index.html" /> 
 </head>
 
@@ -61,8 +61,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#id1">Export</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="runnable.html">Runnable modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PathNode.html">PathNode class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PathTree.html">PathTree class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PathTreeAnalytics.html">PathTreeAnalytics class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PathTreeProperty.html">PathTreeProperty enum</a></li>
 </ul>
 
@@ -242,7 +244,7 @@ is a flag indicating if the node’s path is a directory.</p>
 not satisfy a specific condition. The removal of the nodes can be physical,
 links removed from the nodes, or logical, properties added to the node.</p>
 <p>An example of condition is a limit on the depth.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">keep_condition</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="n">PathTreeProperty</span><span class="o">.</span><span class="n">DEPHT</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">2</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">keep_condition</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="n">PathTreeProperty</span><span class="o">.</span><span class="n">DEPTH</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">2</span>
 </pre></div>
 </div>
 <p>The logical pruning add the pruning propery but does not change the structure of
@@ -317,7 +319,7 @@ folders with holiday pictures (folders with a large number of jpg files).</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="pathtreelib - Tree-based pathlib enhancement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="PathNode.html" class="btn btn-neutral float-right" title="PathNode class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="runnable.html" class="btn btn-neutral float-right" title="Runnable modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

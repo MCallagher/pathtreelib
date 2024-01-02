@@ -26,6 +26,8 @@ automatically at the tree creation starting from the passed root.
    :caption: Contents:
 
    Getting started <intro>
+   Runnable modules <runnable>
    PathNode
    PathTree
+   PathTreeAnalytics
    PathTreeProperty

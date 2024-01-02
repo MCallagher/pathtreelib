@@ -184,7 +184,7 @@ links removed from the nodes, or logical, properties added to the node.
 
 An example of condition is a limit on the depth.
 
->>> keep_condition = lambda node: node.property[PathTreeProperty.DEPHT] <= 2
+>>> keep_condition = lambda node: node.property[PathTreeProperty.DEPTH] <= 2
 
 The logical pruning add the pruning propery but does not change the structure of
 the tree and is reversable.
